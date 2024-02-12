@@ -4,6 +4,7 @@ package com.scaler.userservicefebmwf.controller;
 import com.scaler.userservicefebmwf.dto.LoginRequestDto;
 import com.scaler.userservicefebmwf.dto.LogoutRequestDto;
 import com.scaler.userservicefebmwf.dto.SignupRequestDto;
+import com.scaler.userservicefebmwf.dto.UserDto;
 import com.scaler.userservicefebmwf.models.Token;
 import com.scaler.userservicefebmwf.models.User;
 import com.scaler.userservicefebmwf.service.UserLoginService;
@@ -40,14 +41,14 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public User signUp(@RequestBody SignupRequestDto requestDto){
+    public UserDto signUp(@RequestBody SignupRequestDto requestDto){
 
         String name = requestDto.getName();
         String email = requestDto.getEmail();
         String password = requestDto.getPassword();
 
 
-        return loginService.signUp(name, email, password);
+        return UserDto.from(loginService.signUp(name, email, password));
     }
 
     @PostMapping("/login")
@@ -65,8 +66,8 @@ public class UserController {
     }
 
     @GetMapping("/validate/{token}")
-    public User ValidateToken(@PathVariable("token") @NonNull String token){
+    public UserDto ValidateToken(@PathVariable("token") @NonNull String token){
 
-        return loginService.validateToken(token);
+        return UserDto.from(loginService.validateToken(token));
     }
 }
